@@ -1,0 +1,64 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - My ASP.NET Application</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+
+</head>
+<body>
+    <div class="container">
+        <div class="jumbotron">
+            <h1>Hallmark.WebApi Integration Tests</h1>
+            <p></p>
+            <p><a class="btn btn-primary btn-lg" href="#" role="button">Learn more</a></p>
+        </div>
+
+        @RenderBody()
+    </div>
+    
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @RenderSection("scripts", required: false)
+    <script>
+        $.get('/Home/LatestTestResult', function (response) {
+            var data = response[0];
+            var collectionName = '';
+            for (var i = 0; i < data.results.length; i++) {
+
+                var testName = data.results[i].name;
+                var totalTime = data.results[i].totalTime;
+                var passCount = data.results[i].totalPassFailCounts.pass;
+                var failCount = data.results[i].totalPassFailCounts.fail;
+
+                var row = '';
+                if (failCount > 0) {
+                    row = '<tr class="danger">';
+                } else if (passCount > 0) {
+                    row = '<tr class="success">';
+                } else if (passCount == 0 && failCount == 0) {
+                    row = '<tr class="warning">';
+                } else {
+                    row = '<tr>';
+                }
+
+                row = row +
+                    '<td>' + testName + '</td>' +
+                    '<td>' + totalTime + '</td>' +
+                    '<td>' + passCount + '</td>' +
+                    '<td>' + failCount + '</td>' +
+                '</tr>';
+
+                collectionName = data.collection.name;
+                $('#test-list').append(row);
+            }
+
+            $('#test-list caption').append(collectionName);
+        }).error(function (jqXHR, textStatus, errorThrown) {
+            console.log('error: ' + errorThrown);
+        });
+    </script>
+</body>
+</html>
