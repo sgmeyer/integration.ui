@@ -27,7 +27,7 @@ namespace IntegrationTests.Ui.Controllers
             var collection = db.GetCollection("testresults");
 
             var query = new SortByBuilder();
-            query.Descending("_id");
+            query.Descending("Timestamp");
 
             var latestDocument = collection.FindAllAs<BsonDocument>().SetSortOrder(query).SetLimit(1);
             server.Disconnect();
