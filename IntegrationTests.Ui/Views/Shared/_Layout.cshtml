@@ -58,7 +58,12 @@
                     var template =
                         '<div class="panel panel-primary">' +
                             '<div class="panel-heading">' + testSuite.Name + '</div>' +
-                            '<table class="table">';
+                            '<table class="table">' +
+                                '<tr class="row">' +
+                                    '<th class="col-xs-8">Test Name</th>' +
+                                    '<th class="col-xs-2">Pasing</th>' +
+                                    '<th class="col-xs-2">Failing</th>' +
+                                '</tr>';
 
                     for (var j = 0; j < testSuite.Tests.length; j++) {
                         var test = testSuite.Tests[j];
@@ -69,25 +74,25 @@
                         var failCount = test.FailCount;
 
                         if (failCount > 0) {
-                            template += '<tr class="danger">';
+                            template += '<tr class="row danger">';
                         } else if (passCount > 0) {
-                            template += '<tr class="success">';
+                            template += '<tr class="row success">';
                         } else if (passCount == 0 && failCount == 0) {
-                            template += '<tr class="warning">';
+                            template += '<tr class="row warning">';
                         } else {
-                            template += '<tr>';
+                            template += '<tr class="row">';
                         }
 
                         template +=
-                            '<td>' + test.Name + '</td>' +
-                            '<td>' + passCount + '</td>' +
-                            '<td>' + failCount + '</td>' +
+                                '<td class="col-xs-8">' + test.Name + '</td>' +
+                                '<td class="col-xs-2">' + passCount + '</td>' +
+                                '<td class="col-xs-2">' + failCount + '</td>' +
                             '</tr>';
                     }
 
                     template +=
-                        '</table>' +
-                        '</div>' +
+                                '</table>' +
+                            '</div>' +
                         '</div>';
 
 
