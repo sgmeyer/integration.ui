@@ -8,57 +8,96 @@
     @Scripts.Render("~/bundles/modernizr")
 
 </head>
-<body>
-    <div class="container">
-        <div class="jumbotron">
-            <h1>Hallmark.WebApi Integration Tests</h1>
-            <p></p>
-            <p><a class="btn btn-primary btn-lg" href="#" role="button">Learn more</a></p>
+    <body>
+        <nav class="navbar navbar-default navbar-fixed-top">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="#">Project Liger</a>
+                </div>
+
+                <!-- Collect the nav links, forms, and other content for toggling -->
+                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                    <ul class="nav navbar-nav navbar-right">
+                        <li><a href="#">Current</a></li>
+                        <li><a href="#">History</a></li>
+                    </ul>
+                </div><!-- /.navbar-collapse -->
+            </div><!-- /.container-fluid -->
+        </nav>
+        
+        <br />
+        <br />
+
+        <div class="container">
+            <div class="jumbotron">
+                <h1>Hallmark.WebApi Integration Tests</h1>
+                <p>These integration tests run against live data and are scheduled to run every hour.</p>
+                <p><a class="btn btn-primary btn-lg" href="/" role="button">Run All Tests</a></p>
+            </div>
+
+            @RenderBody()
         </div>
-
-        @RenderBody()
-    </div>
     
-    @Scripts.Render("~/bundles/jquery")
-    @Scripts.Render("~/bundles/bootstrap")
-    @RenderSection("scripts", required: false)
-    <script>
-        $.get('/Home/LatestTestResult', function (response) {
-            var data = response[0];
-            var collectionName = '';
-            for (var i = 0; i < data.results.length; i++) {
+        @Scripts.Render("~/bundles/jquery")
+        @Scripts.Render("~/bundles/bootstrap")
+        @RenderSection("scripts", required: false)
+        <script>
+            $.get('/Home/LatestTestResult', function (response) {
+                var data = response[0];
+                var collectionName = '';
+                for (var i = 0; i < data.TestSuites.length; i++) {
 
-                var testName = data.results[i].name;
-                var totalTime = data.results[i].totalTime;
-                var passCount = data.results[i].totalPassFailCounts.pass;
-                var failCount = data.results[i].totalPassFailCounts.fail;
+                    var testSuite = data.TestSuites[i];
 
-                var row = '';
-                if (failCount > 0) {
-                    row = '<tr class="danger">';
-                } else if (passCount > 0) {
-                    row = '<tr class="success">';
-                } else if (passCount == 0 && failCount == 0) {
-                    row = '<tr class="warning">';
-                } else {
-                    row = '<tr>';
+                    var template =
+                        '<div class="panel panel-primary">' +
+                            '<div class="panel-heading">' + testSuite.Name + '</div>' +
+                            '<table class="table">';
+
+                    for (var j = 0; j < testSuite.Tests.length; j++) {
+                        var test = testSuite.Tests[j];
+
+                        template += '';
+                    
+                        var passCount = test.PassCount;
+                        var failCount = test.FailCount;
+
+                        if (failCount > 0) {
+                            template += '<tr class="danger">';
+                        } else if (passCount > 0) {
+                            template += '<tr class="success">';
+                        } else if (passCount == 0 && failCount == 0) {
+                            template += '<tr class="warning">';
+                        } else {
+                            template += '<tr>';
+                        }
+
+                        template +=
+                            '<td>' + test.Name + '</td>' +
+                            '<td>' + passCount + '</td>' +
+                            '<td>' + failCount + '</td>' +
+                            '</tr>';
+                    }
+
+                    template +=
+                        '</table>' +
+                        '</div>' +
+                        '</div>';
+
+
+                    $('#test-list').append(template);
                 }
 
-                row = row +
-                    '<td>' + testName + '</td>' +
-                    '<td>' + totalTime + '</td>' +
-                    '<td>' + passCount + '</td>' +
-                    '<td>' + failCount + '</td>' +
-                '</tr>';
-
-                collectionName = data.collection.name;
-                $('#test-list').append(row);
-            }
-
-            $('#test-list caption').append(collectionName);
-        }).error(function (jqXHR, textStatus, errorThrown) {
-            console.log('error: ' + errorThrown);
-        });
-    </script>
-</body>
+                $('#test-list caption').append(collectionName);
+            }).error(function (jqXHR, textStatus, errorThrown) {
+                console.log('error: ' + errorThrown);
+            });
+        </script>
+    </body>
 </html>
