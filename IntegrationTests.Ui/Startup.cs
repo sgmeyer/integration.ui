@@ -1,4 +1,7 @@
-﻿using Microsoft.Owin;
+﻿using System.Web.Optimization;
+using System.Web.Routing;
+using Integration_UI;
+using Microsoft.Owin;
 using Owin;
 
 [assembly: OwinStartupAttribute(typeof(IntegrationTests.Ui.Startup))]
@@ -8,6 +11,8 @@ namespace IntegrationTests.Ui
     {
         public void Configuration(IAppBuilder app)
         {
+            BundleConfig.RegisterBundles(BundleTable.Bundles);
+            RouteConfig.RegisterRoutes(RouteTable.Routes);
         }
     }
 }

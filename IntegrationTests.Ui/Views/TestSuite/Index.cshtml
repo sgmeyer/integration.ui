@@ -1,0 +1,19 @@
+﻿<div data-ng-cloak>
+    <ul>
+        <li data-ng-repeat="testSuite in home.testSuites">
+            <h1>{{testSuite.Name}}</h1>
+            <ul>
+                <li data-ng-repeat="tests in testSuite.Tests">
+                    <h2>{{tests.Name}}</h2>
+                    <ul>
+                        <li data-ng-repeat="test in tests.TestCases">
+                            <h3>{{test.Name}}</h3>
+                            <p>Pass count: {{test.PassCount}}</p>
+                            <p>Fail count: {{test.FailCount}}</p>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </li>
+    </ul>
+</div>

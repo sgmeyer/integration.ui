@@ -1,127 +1,66 @@
 ﻿<!DOCTYPE html>
-<html>
+
+<html lang="en" data-ng-app="hallmark.integration-ui">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@ViewBag.Title - My ASP.NET Application</title>
-    @Styles.Render("~/Content/css")
-    @Scripts.Render("~/bundles/modernizr")
-    
-    <style>
-
-        .badge { float: right; margin-right: 5px; }
-        .badge-fail { background-color: red; }
-        .badge-pass { background-color: green;}
-    </style>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta-entity-key name="Hbc-EntityKey" content="@ViewBag.EntityKey"></meta-entity-key>
+    <title>@ViewBag.Title</title>
+    <script> window.Hallmark = window.Hallmark || {}; </script>
+    <link rel="stylesheet" href="/Content/Site.css" />
+    @Scripts.Render(Links.Bundles.Scripts.Modernizr)
+    @Scripts.Render(Links.Bundles.Scripts.Shims)
 </head>
-    <body>
-        <nav class="navbar navbar-default navbar-fixed-top">
-            <div class="container-fluid">
-                <div class="navbar-header">
-                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-                        <span class="sr-only">Toggle navigation</span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                    </button>
-                    <a class="navbar-brand" href="#">Project Liger</a>
+<body class="row-behindcanvas row-behindcanvas-right">
+    <!--[if IEMobile]>
+            <script>
+                  @*  Must be first. IE10 mobile viewport fix *@
+                  if ("-ms-user-select" in document.documentElement.style && navigator.userAgent.match(/IEMobile\/10\.0/)) {
+                      var msViewportStyle = document.createElement("style");
+                      var mq = "@@-ms-viewport{width:auto!important}";
+                      msViewportStyle.appendChild(document.createTextNode(mq));
+                      document.getElementsByTagName("head")[0].appendChild(msViewportStyle);
+                  }
+             </script>
+    <![endif]-->
+    @Html.Partial("_Menu")
+
+    <div class="container-block container-block-expand">
+        <div class="container nav-body-container">
+            <noscript>
+                <div class="alert">
+                    <button type="button" class="close" data-dismiss="alert">&times;</button>
+                    <strong>Warning!</strong> Please enable JavaScript in your browser!
                 </div>
+            </noscript>
+            <div class="row" data-ng-hide="$root.hideBanner">
+                <div class="col-lg-12 banner">
+                    <div class="content-container" data-ng-hide="!$root.bannerText">
+                        <div>
+                            <span data-ng-bind="$root.bannerText" data-ng-cloak="true"></span>
+                        </div>
+                    </div>
 
-                <!-- Collect the nav links, forms, and other content for toggling -->
-                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-                    <ul class="nav navbar-nav navbar-right">
-                        <li><a href="#">Current</a></li>
-                        <li><a href="#">History</a></li>
-                    </ul>
-                </div><!-- /.navbar-collapse -->
-            </div><!-- /.container-fluid -->
-        </nav>
-        
-        <br />
-        <br />
-
-        <div class="container">
-            <div class="jumbotron">
-                <h1>Hallmark.WebApi Integration Tests</h1>
-                <p>These integration tests run against live data and are scheduled to run every hour.</p>
-                <p><a class="btn btn-primary btn-lg" href="/" role="button">Run All Tests</a></p>
+                    @*<span data-ng-bind-html="$root.bannerImage"></span>*@
+                    <content data-key="$root.bannerImageKey" data-lang="en"></content>
+                </div>
             </div>
-
             @RenderBody()
+
+            @Scripts.Render(Links.Bundles.Scripts.JQuery)
+            @Scripts.Render(Links.Bundles.Scripts.Bootstrap)
+            @Scripts.Render(Links.Bundles.Scripts.Underscore)
+            @Scripts.Render(Links.Bundles.Scripts.Angular)
+            @*@Html.RenderHtml("/Content/Partials/ContentPanels.html")*@
         </div>
-    
-        @Scripts.Render("~/bundles/jquery")
-        @Scripts.Render("~/bundles/bootstrap")
-        @RenderSection("scripts", required: false)
-        <script>
-            $.get('/Home/LatestTestResult', function (response) {
-                var data = response[0];
-                var collectionName = '';
-                for (var i = 0; i < data.TestSuites.length; i++) {
-
-                    var testSuite = data.TestSuites[i];
-
-                    var template =
-                            '<div class="panel panel-primary">' +
-                                '<div class="panel-heading" role="tab" id="heading' + i + '">' +
-                                    '<h4 class="panel-title">' +
-                                        '<a data-toggle="collapse" data-parent="#accordion" href="#collapse' + i + '" aria-expanded="true" aria-controls="collapse' + i + '">' +
-                                            testSuite.Name +
-                                    '</a></h4></div>';
-
-                    template += '<div id="collapse' + i + '" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="heading' + i + '">';
-
-                    
-                    for (var j = 0; j < testSuite.Tests.length; j++) {
-                        var test = testSuite.Tests[j];
-
-                    
-                        var passCount = test.PassCount;
-                        var failCount = test.FailCount;
+    </div>
 
 
-                        template +=
-                                '<div class="panel panel-default">' +
-                                    '<div class="panel-heading">' +
-                                        test.Name +
-                                        '<span class="badge badge-fail">' + failCount + '</span>' +
-                                        '<span class="badge badge-pass">' + passCount + '</span>' +
-                                    '</div>' +
-                                    '<div class="panel-body">' +
-                                        '<ul class="list-group">';
 
-                        for (var k = 0; k < test.TestCases.length; k++) {
-                            var testCase = test.TestCases[k];
-                            var testCasePassCount = testCase.PassCount;
-                            var testCaseFailCount = testCase.FailCount;
-
-                            template +=
-                            '<li class="list-group-item">' +
-                                testCase.Name +
-                                '<span class="badge badge-fail">' + testCaseFailCount + '</span>' +
-                                '<span class="badge badge-pass">' + testCasePassCount + '</span>' +
-                            '</li>';
-
-                            for (var l = 0; l < testCase.Results.length; l++) {
-                                var result = testCase.Results[l];
-                                var resultName = result.Description;
-                                var resultPass = result.Passed;
-                            }
-                        }
-
-                        template += '</ul></div></div>';
-                    }
-                    
-                    template += '</div></div></div>';
-
-
-                    $('#test-list').append(template);
-                }
-
-                $('#test-list caption').append(collectionName);
-            }).error(function (jqXHR, textStatus, errorThrown) {
-                console.log('error: ' + errorThrown);
-            });
-        </script>
-    </body>
+    @Scripts.Render(Links.Bundles.Scripts.Nav)
+    @Scripts.Render(Links.Bundles.Scripts.App)
+    @Scripts.Render(Links.Bundles.Scripts.Utilities)
+    @Scripts.Render(Links.Bundles.Scripts.Polyfill)
+</body>
 </html>

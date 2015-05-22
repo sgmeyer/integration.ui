@@ -14,9 +14,16 @@ namespace IntegrationTests.Ui
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
 
             routes.MapRoute(
-                name: "Default",
-                url: "{controller}/{action}/{id}",
-                defaults: new { controller = "Home", action = "Index", id = UrlParameter.Optional }
+                name: "ControllerRouteMap",
+                url: "{controller}/{action}",
+                defaults: new { controller = "Home", action = "Index" },
+                constraints: new { controller = "Home" }
+            );
+
+            routes.MapRoute(
+                name: "TemplateRouteMap",
+                url: "Template/{controller}/{action}",
+                defaults: new { action = "Index" }
             );
         }
     }
