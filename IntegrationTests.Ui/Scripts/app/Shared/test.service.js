@@ -8,14 +8,28 @@
 
     function testService($http, $q) {
         var service = this;
+        service.testSuites = {};
+
+        service.getTestSuites = getTestSuites;
         service.getLatest = getLatest;
+        
+        function getTestSuites() {
+            if (service.testSuites && !angular.equals({}, service.testSuites)) {
+                var deferred = $q.defer();
+                deferred.resolve(service.testSuites);
+                return deferred.promise;
+            }
+            
+            return service.getLatest();
+        }
 
         function getLatest() {
-            return $http.get('/Home/LatestTestResult', function(response) {
+            service.testSuites = {};
+            return $http.get('/Home/LatestTestResult').then(function (response) {
                 response = response.data[0].TestSuites;
+                service.testSuites = response;
                 return response;
             }, function(error) {
-                debugger;
                 return $q.reject(response);
             });
         }

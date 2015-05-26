@@ -1,0 +1,30 @@
+﻿.select-card-container {
+    margin: 10px; 
+    height: 275px;
+    width: 275px;
+    padding-top: 70px;
+    cursor: pointer;
+}
+
+.select-card-container h1 {
+    height: 4.5ex;
+}
+
+.select-card-container p {
+    margin: 0;
+    padding-bottom: 1ex;
+}
+
+.passed-tests {
+    color: white;
+    background-color: green;
+}
+
+.failed-tests {
+    color: white;
+    background-color: red;
+}
+
+.overlay p {
+    color: white;
+}

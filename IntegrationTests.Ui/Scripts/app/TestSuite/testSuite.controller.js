@@ -2,18 +2,31 @@
     'use strict';
 
     angular.module('hallmark.integration-ui')
-        .controller('homeController', homeController);
+        .controller('testSuiteController', testSuiteController);
 
-    homeController.$inject = ['testService'];
-    function homeController(testService) {
+    testSuiteController.$inject = ['$state', 'dataService', 'tests'];
+
+    function testSuiteController($state, dataService, tests) {
         var vm = this;
-        vm.testSuites = [];
+        vm.tests = tests;
+        vm.getTestResults = getTestResults;
+        vm.selectTest = selectTest;
 
         (function () {
-            testService.getLatest().then(function (testSuites) {
-                testSuites = testSuites.data[0].TestSuites;
-                vm.testSuites = testSuites;
-            });
         }());
+
+        function getTestResults(test) {
+            if (test.FailCount > 0) {
+                return 'failed-tests';
+            } else {
+                return 'passed-tests';
+            }
+        }
+
+        function selectTest(test) {
+            dataService.setTestCases(test.TestCases);
+            $state.go('Test.TestSuite.TestCase');
+        }
     }
+
 }(angular, _));

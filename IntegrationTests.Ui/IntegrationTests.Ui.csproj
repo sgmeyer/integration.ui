@@ -163,6 +163,8 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\AllTestsController.cs" />
+    <Compile Include="Controllers\TestCaseController.cs" />
     <Compile Include="Controllers\TestSuiteController.cs" />
     <Compile Include="Helpers\HtmlHelper.cs" />
     <Compile Include="Models\TestSuiteCollection.cs" />
@@ -179,6 +181,7 @@
     <Content Include="Content\Partials\ContentPanels\Pod2.html" />
     <Content Include="Content\Partials\ContentPanels\Pod3.html" />
     <Content Include="Content\Partials\ContentPanels\Pod4.html" />
+    <Content Include="Content\Tests.css" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\fontawesome-webfont.svg" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
@@ -189,8 +192,12 @@
     <Content Include="Scripts\app\app.config.js" />
     <Content Include="Scripts\app\app.js" />
     <Content Include="Scripts\app\app.routes.js" />
-    <Content Include="Scripts\app\TestSuite\testSuite.controller.js" />
+    <Content Include="Scripts\app\AllTests\allTests.controller.js" />
+    <Content Include="Scripts\app\Shared\data.service.js" />
+    <Content Include="Scripts\app\Shared\flow.service.js" />
     <Content Include="Scripts\app\Shared\test.service.js" />
+    <Content Include="Scripts\app\TestCase\testCase.controller.js" />
+    <Content Include="Scripts\app\TestSuite\testSuite.controller.js" />
     <Content Include="Scripts\libs\angular-ui-router\angular-ui-router.js" />
     <Content Include="Scripts\libs\angular-ui-router\angular-ui-router.min.js" />
     <Content Include="Scripts\libs\angular\angular-animate.js" />
@@ -988,7 +995,7 @@
     <Content Include="Views\Partials\ContentPanels\Pod2.html" />
     <Content Include="Views\Partials\ContentPanels\Pod3.html" />
     <Content Include="Views\Partials\ContentPanels\Pod4.html" />
-    <None Include="Views\TestSuite\Index.cshtml" />
+    <None Include="Views\AllTests\Index.cshtml" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -1016,6 +1023,8 @@
     <Content Include="Views\Partials\ContentPanels\ContentPanels.cshtml" />
     <Content Include="Views\SampleTemplate\Index.cshtml" />
     <Content Include="Views\Shared\_Menu.cshtml" />
+    <Content Include="Views\TestSuite\Index.cshtml" />
+    <Content Include="Views\TestCase\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
