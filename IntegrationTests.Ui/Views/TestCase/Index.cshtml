@@ -1,0 +1,12 @@
+﻿<div class="overlay">
+    <i class="close fa fa-times" tabindex="-1" data-ui-sref="^"></i>
+    <div class="col-xs-12 col-lg-offset-3 col-lg-6 overlay-center">
+        <ul class="select-card-list">
+            <li class="select-card-container" data-ng-class="tc.getTestCaseResults(testCase)" data-ng-repeat="testCase in tc.testCases">
+                <h1>{{testCase.Name}}</h1>
+                <p>Passed Count: <strong>{{testCase.PassCount}}</strong></p>
+                <p>Failed Count: <strong>{{testCase.FailCount}}</strong></p>
+            </li>
+        </ul>
+    </div>
+</div>

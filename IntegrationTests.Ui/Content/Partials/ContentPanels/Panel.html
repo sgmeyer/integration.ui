@@ -1,0 +1,9 @@
+﻿<div class="header">
+    <span data-ng-cloak="true" data-ng-bind-html="root.pods[panel.index].header"></span>
+</div>
+<div class="content">
+    <span data-ng-cloak="true" data-ng-bind-html="root.pods[panel.index].content"></span>
+</div>
+<div>
+    <i class="fa fa-2x " data-ng-class='{"fa-minus-square": root.active[{{panel.index}}], "fa-plus-square": !root.active[{{panel.index}}]}'></i>
+</div>

@@ -1,4 +1,5 @@
 ﻿using System.Configuration;
+using System.Threading.Tasks;
 using MongoDB.Bson;
 using MongoDB.Bson.IO;
 using MongoDB.Driver;
@@ -9,12 +10,13 @@ namespace IntegrationTests.Ui.Controllers
 {
     public class HomeController : Controller
     {
-        public ActionResult Index()
+        [HttpGet]
+        public async Task<ActionResult> Index()
         {
-            return View();
+            return PartialView();
         }
 
-        public ContentResult LatestTestResult()
+        public async Task<ContentResult> LatestTestResult()
         {
             var mongoconnection = ConfigurationManager.AppSettings["mongo"];
             var database = ConfigurationManager.AppSettings["mongodb"];

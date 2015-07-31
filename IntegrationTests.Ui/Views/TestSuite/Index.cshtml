@@ -1,0 +1,8 @@
+﻿    <ul class="select-card-list">
+        <li class="select-card-container well well-sm" data-ng-class="ts.getTestResults(test)" data-ng-repeat="test in ts.tests" data-ng-click="ts.selectTest($index)">
+            <h1>{{test.Name}}</h1>
+            <p>Passed Count: <strong>{{test.PassCount}}</strong></p>
+            <p>Failed Count: <strong>{{test.FailCount}}</strong></p>
+        </li>
+    </ul>
+<div data-ui-view=""></div>

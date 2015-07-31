@@ -1,0 +1,24 @@
+﻿<div data-ng-cloak="">
+    <div accordion="" close-others="true">
+        <div data-accordion-group="" data-ng-repeat="testSuite in at.testSuites" data-ng-class="at.getTestResults(testSuite)" is-open="testSuite.open">
+            <div data-accordion-heading="" class="white">
+                <div data-ng-click="at.selectTestSuite($index)">
+                    <div class="col-lg-3">-&nbsp;{{testSuite.Name}}</div>
+                    <span class="col-lg-3">
+                        <i class="fa fa-check green"></i>
+                        {{at.getTestStatusCount(true, testSuite)}}
+                    </span>
+                    <span class="col-lg-3">
+                        <i class="fa fa-times red col-lg-3"></i>
+                        {{at.getTestStatusCount(false, testSuite)}}
+                    </span>
+                    <div class="col-lg-3">
+                        <i class="pull-right fa" data-ng-class="{'fa-angle-right': !testSuite.open, 'fa-angle-down': testSuite.open}"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="clearfix" style="padding-top: 20px;" data-ui-view="">
+            </div>
+        </div>
+    </div>
+</div>
