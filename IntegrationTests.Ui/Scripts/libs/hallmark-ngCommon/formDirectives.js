@@ -1,7 +1,7 @@
-﻿(function (angular, _) {
+﻿(function(angular, _) {
     'use strict';
 
-    angular.module('hallmark.common.formDirectives', [])
+    angular.module('hallmark.common')
         .directive('button', buttonSubmitClick)
         .directive('form', formSubmitted)
         .directive('ngForm', formSubmitted)
@@ -13,7 +13,7 @@
         return {
             restrict: 'E',
             require: ['^?form', '^^?form'],
-            link: function (scope, elem, attrs, forms) {
+            link: function(scope, elem, attrs, forms) {
                 if (!attrs.hbcSubmit) {
                     return;
                 }
@@ -22,7 +22,7 @@
                     return;
                 }
 
-                elem.on('click', function () {
+                elem.on('click', function() {
                     scope.$emit('submitForm', true);
                 });
             }
@@ -32,22 +32,23 @@
     function ngFormNotStandard() {
         return {
             restrict: 'A',
-            link: function () {
+            link: function() {
                 console.log("Please use <form> over ng-form as our validation requires it");
             }
         }
     };
 
     formSubmitted.$inject = [];
+
     function formSubmitted() {
         return {
             restrict: 'EA',
-            link: function (scope, elem, attrs) {
+            link: function(scope, elem, attrs) {
                 if (!attrs.name || attrs.parentForm) {
                     return;
                 }
 
-                scope.$on('submitForm', function ($event, value) {
+                scope.$on('submitForm', function($event, value) {
                     scope[attrs.name].$submitted = value;
                     //Force a digest because we are finished with the current iteration
                     scope.$digest();
@@ -64,14 +65,17 @@
     };
 
     formGroupValidation.$inject = [];
+
     function formGroupValidation() {
         return {
             restrict: 'AC',
             require: '^?form',
-            link: function (scope, elem, attrs, formController) {
-                if (!attrs.formInput || !formController) { return; }
+            link: function(scope, elem, attrs, formController) {
+                if (!attrs.formInput || !formController) {
+                    return;
+                }
 
-                scope.$on('submitForm', function ($event, value) {
+                scope.$on('submitForm', function($event, value) {
                     if (value && formController[attrs.formInput].$invalid) {
                         elem.addClass('has-error');
                     }
@@ -81,16 +85,21 @@
     };
 
     customInputValidation.$inject = ['$compile'];
+
     function customInputValidation($compile) {
         return {
             restrict: 'A',
             transclude: true,
             require: ['^?form', 'ngModel'],
-            link: function (scope, elem, attrs, controllers) {
-                if (!attrs.validationTypes) { return; }
+            link: function(scope, elem, attrs, controllers) {
+                if (!attrs.validationTypes) {
+                    return;
+                }
                 var validationTypes = attrs.validationTypes.replace(/\s/g, "").split(',');
                 var formController = controllers[0], modelController = controllers[1];
-                if (!formController) { return; }
+                if (!formController) {
+                    return;
+                }
 
                 var formName = formController.$name;
                 var mainForm = elem[0].form;
@@ -99,7 +108,7 @@
                 }
 
                 var errors = [];
-                _.each(validationTypes, function (validationType) {
+                _.each(validationTypes, function(validationType) {
                     var validationError = attrs[validationType + 'Error'];
                     if (validationError === undefined) {
                         console.log("`data-" + validationType + "-error` is required when `data-validation-types` is defined on " + $(elem).attr('name'));
@@ -121,5 +130,5 @@
                 }
             }
         }
-    }
+    };
 }(angular, _));

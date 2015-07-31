@@ -1,26 +1,14 @@
-﻿(function (angular, document) {
+﻿(function (angular) {
     'use strict';
 
-    var mod = angular.module('hallmark.common.interceptors', []);
+    angular.module('hallmark.common')
+        .factory('entityKeyInterceptor', entityKeyInterceptor);
 
-    mod.factory('httpRequestInterceptorCacheFix', ['$q', function ($q) {
-        return {
-            'request': function (request) {
-                if (request.method === 'GET') {
-                    if (request.url.indexOf("html") === -1) {
-                        var sep = request.url.indexOf('?') === -1 ? '?' : '&';
-                        request.url = request.url + sep + 'cacheBuster=' + new Date().getTime();
-                    }
-                }
-                return request || $q.when(request);
-            }
-        };
-    }]);
+    entityKeyInterceptor.$inject = ['$rootScope'];
 
-    mod.factory('entityKeyInterceptor', ['$rootScope', function ($rootScope) {
-
-        var entityKeyInterceptor = {};
-        var request = function (config) {
+    function entityKeyInterceptor($rootScope) {
+        var interceptor = {};
+        var theRequest = function (config) {
             if ($rootScope.entityKey) {
                 config.headers = config.headers || {};
                 config.headers["Hbc-EntityKey"] = $rootScope.entityKey;
@@ -28,7 +16,7 @@
             return config;
         };
 
-        entityKeyInterceptor.request = request;
-        return entityKeyInterceptor;
-    }]);
-}(angular, document));
+        interceptor.request = theRequest;
+        return interceptor;
+    };
+}(angular));

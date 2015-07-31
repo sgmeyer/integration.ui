@@ -8,7 +8,6 @@
     config.$inject = ['$httpProvider'];
     
     function config ($httpProvider) {
-        $httpProvider.interceptors.push('httpRequestInterceptorCacheFix');
         $httpProvider.interceptors.push('entityKeyInterceptor');
         $httpProvider.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
     }

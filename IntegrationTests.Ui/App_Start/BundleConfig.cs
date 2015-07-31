@@ -42,8 +42,16 @@ namespace Integration_UI
                .Include("~/Scripts/app/app.js")
                .IncludeDirectory("~/Scripts/app", "*.js", true)
 
-               .Include("~/Scripts/libs/hallmark-ngCommon/module.js")
+               .Include("~/Scripts/libs/hallmark-ngCommon/_module.js")
                .IncludeDirectory("~/Scripts/libs/hallmark-ngCommon", "*.js", true)
+
+               .Include("~/Scripts/libs/hallmark-ngContent/content.js")
+               .IncludeDirectory("~/Scripts/libs/hallmark-ngContent", "*.js", true)
+
+               .Include("~/Scripts/libs/hallmark-angular-ui-bootstrap/ui-bootstrap.js")
+               .IncludeDirectory("~/Scripts/libs/hallmark-angular-ui-bootstrap", "*.js", true)
+
+               .Include("~/Scripts/libs/hallmark-cookieStorage/cookieStorage.js")
             );
 
             bundles.Add(new ScriptBundle(Bundles.Scripts.Bootstrap)

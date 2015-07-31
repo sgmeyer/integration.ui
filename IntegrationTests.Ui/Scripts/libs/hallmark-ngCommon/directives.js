@@ -1,7 +1,7 @@
 ﻿(function (angular, modernizr, _, hallmark) {
     'use strict';
 
-    angular.module('hallmark.common.directives', [])
+    angular.module('hallmark.common')
         .directive('numbersOnly', numbersOnly)
         .directive('numberStep', numberStep)
         .directive('scrollToTop', scrollToTop)
@@ -18,7 +18,8 @@
         .directive('modernizrSvg', modernizrSvg)
         .directive('categoryMenu', categoryMenu)
         .directive('customSelectBox', customSelectBox)
-        .directive('datepickerPattern', datepickerPattern);
+        .directive('datepickerValidation', datepickerValidation)
+        .directive('ieSelectFix', ieSelectFix);
 
     numbersOnly.$inject = ['window'];
 
@@ -90,9 +91,9 @@
         };
     };
 
-    scrollToTop.$inject = ['$window'];
+    scrollToTop.$inject = ['$anchorScroll', '$location', '$window'];
 
-    function scrollToTop($window) {
+    function scrollToTop($anchorScroll, $location, $window) {
         return {
             link: function (scope, element, attr) {
                 if (!attr.scrollToElement) {
@@ -104,7 +105,14 @@
 
 
                 $(element).click(function () {
-                    $("html, body").animate({ scrollTop: $('#' + attr.scrollToElement).offset().top }, "fast");
+                    //$("html, body").animate({ scrollTop: $('#' + attr.scrollToElement).offset().top }, "fast");
+
+                    var old = $location.hash();
+                    $location.hash(attr.scrollToElement);
+                    $anchorScroll();
+
+                    //reset to old to keep any additional routing logic from kicking in
+                    $location.hash(old);
                 });
 
                 angular.element($window).bind("scroll", function () {
@@ -221,8 +229,8 @@
             require: 'ngModel',
             restrict: 'A',
             link: function (scope, elem, attrs, ctrl) {
-                scope.$watch(attrs.ngPattern, function () {
-                    if (ctrl.$viewValue && ctrl.$viewValue !== '') {
+                scope.$watch(attrs.ngPattern, function (newValue) {
+                    if (ctrl.$viewValue && ctrl.$viewValue !== '' && !newValue.test(ctrl.$viewValue)) {
                         ctrl.$setViewValue(ctrl.$viewValue);
                     }
                 });
@@ -527,6 +535,30 @@
         };
     }
 
+    ieSelectFix.$inject = ['$window'];
+
+    function ieSelectFix($window) {
+        return {
+            restrict: 'A',
+            require: 'ngModel',
+            link: function (scope, element, attributes) {
+                if ($window.Browser.IsIe() && $window.Browser.Version() <= 9) {
+                    var control = element[0];
+                    //to fix IE8 issue with parent and detail controller, we need to depend on the parent controller
+                    scope.$watch(attributes.ieSelectFix, function () {
+                        setTimeout(function () {
+                            //this will add and remove the options to trigger the rendering in IE8
+                            var option = document.createElement("option");
+                            control.add(option, null);
+                            control.remove(control.options.length - 1);
+                        }, 0);
+                    });
+                }
+            }
+        };
+    }
+
+
     categoryMenu.$inject = ['$analytics'];
     function categoryMenu($analytics) {
         return {
@@ -610,26 +642,49 @@
         }
     }
 
-    function datepickerPattern() {
+    datepickerValidation.$inject = ['$parse'];
+    function datepickerValidation($parse) {
         return {
             restrict: 'A',
+            priority: -100,
             require: 'ngModel',
             link: function (scope, elem, attrs, ngModelCtrl) {
-                var dRegex = new RegExp(attrs.datepickerPattern);
+
+                var minDate = hallmark.Helpers.getPropertyByString(scope, attrs.minDate);
+                var maxDate = hallmark.Helpers.getPropertyByString(scope, attrs.maxDate);
+                var dateDisabledFn = attrs.dateDisabled ? $parse(attrs.dateDisabled) : undefined;
+                var datepickerMode = attrs.datepickerMode ? attrs.datepickerMode : 'day';
+
                 ngModelCtrl.$parsers.unshift(function (value) {
 
-                    if (typeof value === 'string') {
-                        if (value != '') {
-                            var isValid = dRegex.test(value);
-                            ngModelCtrl.$setValidity('datePicker', isValid);
-                            if (!isValid) {
-                                return undefined;
-                            }
+                    var isValid = false;
+
+                    if ((value instanceof Date) && (value.toString() !== 'Invalid Date')) {
+
+                        var dateTimeValue = value.getTime();
+
+                        if (minDate && (dateTimeValue < minDate.getTime())) {
+                            isValid = false;
+                        } else if (maxDate && (dateTimeValue > maxDate.getTime())) {
+                            isValid = false;
+                        } else if (dateDisabledFn) {
+                            isValid = !dateDisabledFn(scope, { date: value, mode: datepickerMode });
+                        } else {
+                            isValid = true;
                         }
+
+                        ngModelCtrl.$setValidity('format', true);
+                        ngModelCtrl.$setValidity('range', isValid);
+                    } else {
+                        ngModelCtrl.$setValidity('format', false);
+                        ngModelCtrl.$setValidity('range', true);
+                    }
+
+                    if (!isValid) {
+                        return undefined;
                     }
                     return value;
                 });
-
             }
         };
     };

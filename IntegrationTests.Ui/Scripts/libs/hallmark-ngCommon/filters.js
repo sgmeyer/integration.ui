@@ -1,11 +1,15 @@
-﻿(function (angular) {
+﻿(function(angular) {
     'use strict';
 
-    var mod = angular.module('hallmark.common.filters', []);
+    angular.module('hallmark.common')
+        .filter('htmlSafeContent', htmlSafeContent);
 
-    mod.filter('htmlSafeContent', ['$sce', function ($sce) {
-        return function (val) {
+    htmlSafeContent.$inject = ['$sce'];
+
+    function htmlSafeContent($sce) {
+        return function(val) {
             return $sce.trustAsHtml(val);
         }
-    }]);
+    };
+
 }(angular));

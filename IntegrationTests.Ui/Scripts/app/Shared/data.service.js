@@ -1,4 +1,4 @@
-﻿(function (angular, _) {
+﻿(function (angular) {
     'use strict';
 
     angular.module('hallmark.integration-ui')
@@ -8,28 +8,22 @@
 
     function dataService() {
         var storage = this;
-        storage.tests = {};
-        storage.testCases = {};
-
-        storage.setTests = setTests;
-        storage.getTests = getTests;
-        storage.setTestCases = setTestCases;
-        storage.getTestCases = getTestCases;
-
-        function getTests() {
-            return storage.tests;
+        storage.testSuites = {};
+  
+        storage.setTestSuites = setTestSuites;
+        storage.getTestsBySuiteIndex = getTestsBySuiteIndex;
+        storage.getTestsCasesBySuiteAndTest = getTestsCasesBySuiteAndTest;
+        
+        function setTestSuites(testSuites) {
+            storage.testSuites = testSuites;
         }
 
-        function setTests(tests) {
-            storage.tests = tests;
+        function getTestsBySuiteIndex(index) {
+            return storage.testSuites[index].Tests;
         }
 
-        function getTestCases() {
-            return storage.testCases;
-        }
-
-        function setTestCases(testCases) {
-            storage.testCases = testCases;
-        }
+        function getTestsCasesBySuiteAndTest(suiteIndex, testIndex) {
+            return storage.testSuites[suiteIndex].Tests[testIndex].TestCases;
+        } 
     }
-}(angular, _));
+}(angular));

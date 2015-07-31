@@ -1,4 +1,24 @@
-﻿.select-card-container {
+﻿.panel-default > .panel-heading {
+    background-color: transparent;
+}
+
+.white {
+    color: white;
+}
+
+.green {
+    color: green;
+}
+
+.red {
+    color: red;
+}
+
+.panel-heading {
+    height: 30px;
+}
+
+.select-card-container {
     margin: 10px; 
     height: 275px;
     width: 275px;
@@ -15,14 +35,23 @@
     padding-bottom: 1ex;
 }
 
+.passed-tests.select-card-container {
+    background-color: #23B523;
+}
+
+.failed-tests.select-card-container {
+    background-color: red;
+}
+
 .passed-tests {
+    
     color: white;
-    background-color: green;
+    background-color: #8ffb8f;
 }
 
 .failed-tests {
     color: white;
-    background-color: red;
+    background-color: #fbb4b4;
 }
 
 .overlay p {

@@ -20,10 +20,10 @@
             var nextState = toState.name;
             var previousState = (fromState && fromState.name) ? fromState.name : 'Test';
 
-            if (nextState === 'Test.TestSuite' && !testsFlowService.isAllowedToViewTests()) {
+            if (nextState === 'Test.TestSuite' && !testsFlowService.isAllowedToViewTests(toParams)) {
                 event.preventDefault();
                 $state.go(previousState);
-            } else if (nextState === 'Test.TestSuite.TestCase' && !testsFlowService.isAllowedToViewTestCases()) {
+            } else if (nextState === 'Test.TestSuite.TestCase' && !testsFlowService.isAllowedToViewTestCases(toParams)) {
                 event.preventDefault();
                 $state.go(previousState);
             }

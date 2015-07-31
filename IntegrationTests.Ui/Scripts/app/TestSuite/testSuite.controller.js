@@ -4,11 +4,11 @@
     angular.module('hallmark.integration-ui')
         .controller('testSuiteController', testSuiteController);
 
-    testSuiteController.$inject = ['$state', 'dataService', 'tests'];
+    testSuiteController.$inject = ['$state', 'dataService', 'suiteIndex'];
 
-    function testSuiteController($state, dataService, tests) {
+    function testSuiteController($state, dataService, suiteIndex) {
         var vm = this;
-        vm.tests = tests;
+        vm.tests = dataService.getTestsBySuiteIndex(suiteIndex);
         vm.getTestResults = getTestResults;
         vm.selectTest = selectTest;
 
@@ -23,9 +23,8 @@
             }
         }
 
-        function selectTest(test) {
-            dataService.setTestCases(test.TestCases);
-            $state.go('Test.TestSuite.TestCase');
+        function selectTest(testIndex) {
+            $state.go('Test.TestSuite.TestCase', { suiteIndex: suiteIndex, testIndex: testIndex });
         }
     }
 

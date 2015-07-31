@@ -15,6 +15,7 @@
 
         (function() {
             testService.getTestSuites().then(function (testSuites) {
+                dataService.setTestSuites(testSuites);
                 vm.testSuites = testSuites;
             });
         }());
@@ -46,9 +47,8 @@
             }
         }
 
-        function selectTestSuite(testSuite) {
-            dataService.setTests(testSuite.Tests);
-            $state.go('Test.TestSuite');
+        function selectTestSuite(index) {
+            $state.go('Test.TestSuite', { suiteIndex: index });
         };
     }
 }(angular, _));

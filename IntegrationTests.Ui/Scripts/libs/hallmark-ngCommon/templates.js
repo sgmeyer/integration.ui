@@ -1,9 +1,12 @@
 ﻿(function (angular) {
     'use strict';
 
-    var mod = angular.module("hallmark.common.templates", []);
+    angular.module("hallmark.common")
+    .run(setTemplateCaches);
 
-    mod.run(["$templateCache", function ($templateCache) {
+    setTemplateCaches.$inject = ['$templateCache'];
+    function setTemplateCaches($templateCache) {
+        //popover override
         $templateCache
             .put("templates/hbcPopover.html",
                 "<div class=\"popover {{placement}}\" data-ng-class=\"{ in: isOpen(), fade: animation() }\">\n" +
@@ -15,9 +18,12 @@
                 "      <a class=\"close\" style=\"position: absolute; top: -8px; right: -8px;\"><i class=\"fa fa-times-circle-o\"></i></a>\n" +
                 "  </div>\n" +
                 "</div>\n" +
-                "")
-        $templateCache.put("templates/hbcCategoryList.html",
-                "<div class=\"row row-fixed-top hbc-category-menu\">\n" +
+                "");
+
+        //Subnavigation menu (i.e. category menu)
+        $templateCache
+            .put("templates/hbcCategoryList.html",
+                    "<div class=\"row row-fixed-top hbc-category-menu\">\n" +
                         "<div class=\"container no-bg\">\n" +
                             "<div class=\"row\" " +
                                   "data-ng-class=\"{\'hidden-sm hidden-xs\': showMobileSearch && hasSearch === \'true\', " +
@@ -67,8 +73,7 @@
                                 "<span class=\"mock-group-addon js-clickable\" data-ng-click=\"showMobileSearch = !showMobileSearch\"><i class=\"fa fa-search\"></i></span>\n" +
                             "</div>\n" +
                         "</div>\n" +
-                    "</div>\n" +
-                    "");
-    }]);
+                    "</div>\n");
+    };
 }(angular));
 

@@ -1,4 +1,4 @@
-﻿(function (angular) {
+﻿(function (angular, _) {
 
     angular
         .module('hallmark.integration-ui')
@@ -11,18 +11,21 @@
         that.isAllowedToViewTests = isAllowedToViewTests;
         that.isAllowedToViewTestCases = isAllowedToViewTestCases;
 
-        function isAllowedToViewTests() {
-            var tests = dataService.getTests();
+        function isAllowedToViewTests(toParams) {
+            if (toParams['suiteIndex'] === undefined) {
+                return false;
+            }
+            var tests = dataService.getTestsBySuiteIndex(toParams['suiteIndex']);
             return tests && !angular.equals({}, tests);
         };
 
-        function isAllowedToViewTestCases() {
-            if (!isAllowedToViewTests) {
+        function isAllowedToViewTestCases(toParams) {
+            if (!isAllowedToViewTests(toParams) && toParams['testIndex'] === undefined) {
                 return false;
             }
-            var testCases = dataService.getTestCases();
+            var testCases = dataService.getTestsCasesBySuiteAndTest(toParams['suiteIndex'], toParams['testIndex']);
             return testCases && !angular.equals({}, testCases);
         };
     }
 
-})(angular);
+})(angular, _);

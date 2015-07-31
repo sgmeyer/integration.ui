@@ -4,10 +4,8 @@
     global.console = global.console || {log: function() {} };
 
     angular.module('hallmark.common', [
-        'hallmark.common.directives',
-        'hallmark.common.formDirectives',
-        'hallmark.common.filters',
-        'hallmark.common.interceptors',
-        'hallmark.common.templates'
+            'ui.bootstrap',
+            'CookieStorageModule',
+            'hallmark.content'
     ]);
 }(angular, typeof window === 'undefined' ? this : window));

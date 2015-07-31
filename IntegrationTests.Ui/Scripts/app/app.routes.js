@@ -14,48 +14,37 @@
                 url: '/Test',
                 templateUrl: '/Template/AllTests/Index',
                 controller: 'allTestsController',
-                controllerAs: 'at',
-                resolve: {
-                    testSuites: testSuitesResolver
-                }
+                controllerAs: 'at'
             })
             .state('Test.TestSuite', {
-                url: '/TestSuite',
+                url: '/:suiteIndex',
                 templateUrl: '/Template/TestSuite/Index',
                 controller: 'testSuiteController',
                 controllerAs: 'ts',
                 resolve: {
-                    tests: testsResolver
+                    suiteIndex: testsResolver
                 }
             }).state('Test.TestSuite.TestCase', {
-                url: '/TestCases',
+                url: '/:testIndex',
                 templateUrl: '/Template/TestCase/Index',
                 controller: 'testCaseController',
                 controllerAs: 'tc',
                 resolve: {
-                    testCases: testCasesResolver
+                    suiteIndex: testsResolver,
+                    testIndex: testCasesResolver
                 }
             });
     };
 
+    testsResolver.$inject = ['$stateParams'];
 
-    testSuitesResolver.$inject = ['dataService'];
-
-    function testSuitesResolver(dataService) {
-        dataService.setTestCases({});
-        dataService.setTests({});
+    function testsResolver($stateParams) {
+        return $stateParams['suiteIndex'];
     }
 
-    testsResolver.$inject = ['dataService'];
+    testCasesResolver.$inject = ['$stateParams'];
 
-    function testsResolver(dataService) {
-        dataService.setTestCases({});
-        return dataService.getTests();
-    }
-
-    testCasesResolver.$inject = ['dataService'];
-
-    function testCasesResolver(dataService) {
-        return dataService.getTestCases();
+    function testCasesResolver($stateParams) {
+        return $stateParams['testIndex'];
     }
 })(angular);

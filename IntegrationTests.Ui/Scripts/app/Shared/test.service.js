@@ -30,7 +30,7 @@
                 service.testSuites = response;
                 return response;
             }, function(error) {
-                return $q.reject(response);
+                return $q.reject(error);
             });
         }
     }
